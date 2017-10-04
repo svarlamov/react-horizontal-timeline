@@ -16,7 +16,7 @@ import Constants from '../Constants';
  * @param {string} date The string representation of a date
  * @return {string} The formatted date string
  */
-const defaultGetLabel = (date, index) => (new Date(date)).toDateString().substring(4);
+const defaultGetLabel = (label, index) => label ? label : index;
 
 /*
  * This is the Horizontal Timeline. This component expects an array of dates
@@ -46,12 +46,19 @@ class HorizontalTimeline extends React.Component {
     );
 
     // Convert the distances and dates to events
-    const events = distances.map((distance, index) => ({
-      distance,
-      label: props.values[index].title ? props.values[index].title : index,
-      date: new Date(index).toISOString(),
-      color : props.values[index].color ? props.values[index].color : null
-    }));
+    const events = distances.map((distance, index) => {
+      let label = props.values[index].title ? props.values[index].title : index;
+      if(props.getLabel){
+        label = props.getLabel(label, index)
+      }
+
+      return {
+        distance,
+        label: label,
+        date: new Date(index).toISOString(),
+        color: props.values[index].color ? props.values[index].color : null
+      }
+    });
 
     const visibleWidth = this.props.containerWidth - 80;
 
