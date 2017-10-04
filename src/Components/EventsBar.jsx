@@ -105,13 +105,15 @@ class EventsBar extends React.Component {
     const minVisible = -this.state.position; // Position is always negative!
     const maxVisible = minVisible + props.visibleWidth;
 
-    if (selectedEvent.distance > (minVisible + 10) && selectedEvent.distance < (maxVisible - 10)) {
-      //Make sure we are not outside the view
-      this.slideToPosition(this.state.position, props);
-    } else {
-      //Try to center the selected index
-      this.slideToPosition(-(selectedEvent.distance - (props.visibleWidth / 2)), props);
-    }
+    // always center
+    this.slideToPosition(-(selectedEvent.distance - (props.visibleWidth / 2)), props);
+
+    // if (selectedEvent.distance > (minVisible + 10) && selectedEvent.distance < (maxVisible - 10)) {
+    //   //Make sure we are not outside the view
+    // } else {
+    //   //Try to center the selected index
+    //   this.slideToPosition(-(selectedEvent.distance - (props.visibleWidth / 2)), props);
+    // }
   }
 
   /**
