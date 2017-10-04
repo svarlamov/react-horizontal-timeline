@@ -63,18 +63,33 @@ const dots = {
 class TimelineDot extends React.Component {
 
   __getDotStyles__ = (dotType, key) => {
-    const hoverStyle = {
+    let defaultStyle = undefined;
+
+    let hoverStyle = {
       backgroundColor: this.props.styles.foreground,
       border: `2px solid ${this.props.styles.foreground}`,
     };
 
+    if (this.props.color) {
+      defaultStyle = {
+        border: `2px solid ${this.props.color}`,
+      };
+      if (dotType === "present"){
+        defaultStyle.backgroundColor = this.props.color;
+      }
+
+      hoverStyle = {
+        backgroundColor: this.props.color,
+        border: `2px solid ${this.props.color}`,
+      };
+    }
     return [
       dots.base,
       { left: this.props.labelWidth / 2 - dots.base.width / 2},
       dots[dotType](this.props.styles),
       Radium.getState(this.state, key, ':hover') || Radium.getState(this.state, 'dot-dot', ':hover')
         ? hoverStyle
-        : undefined,
+        : defaultStyle,
     ]
   }
 
@@ -133,6 +148,7 @@ TimelineDot.propTypes = {
   // The numerical value in pixels of the distance from the origin
   distanceFromOrigin: PropTypes.number.isRequired,
   // The styles prefrences of the user
+  color: PropTypes.string,
   styles: PropTypes.object.isRequired
 };
 
